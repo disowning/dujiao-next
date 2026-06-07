@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_VERSION: ${APP_VERSION:-self-hosted}
+    container_name: dujiao-next
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: "8080"
+      SERVER_MODE: release
+      APP_SECRET_KEY: ${APP_SECRET_KEY:?set APP_SECRET_KEY in .env}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      USER_JWT_SECRET: ${USER_JWT_SECRET:?set USER_JWT_SECRET in .env}
+      WEB_ADMIN_PATH: ${WEB_ADMIN_PATH:?set WEB_ADMIN_PATH in .env}
+      DJ_DEFAULT_ADMIN_USERNAME: ${DJ_DEFAULT_ADMIN_USERNAME:-admin}
+      DJ_DEFAULT_ADMIN_PASSWORD: ${DJ_DEFAULT_ADMIN_PASSWORD:?set DJ_DEFAULT_ADMIN_PASSWORD in .env}
+      DATABASE_DRIVER: sqlite
+      DATABASE_DSN: ./db/dujiao.db
+      REDIS_ENABLED: "true"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      QUEUE_ENABLED: "true"
+      QUEUE_HOST: redis
+      QUEUE_PORT: "6379"
+    ports:
+      - "127.0.0.1:${HOST_PORT:-18080}:8080"
+    volumes:
+      - ./data/db:/app/db
+      - ./data/uploads:/app/uploads
+      - ./data/logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - default
+      - onepanel
+
+  redis:
+    image: redis:7-alpine
+    container_name: dujiao-next-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  onepanel:
+    external: true
+    name: 1panel-network

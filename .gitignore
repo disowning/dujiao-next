@@ -1,0 +1,7 @@
+.env
+data/
+**/node_modules/
+dujiao-next/config.yml
+dujiao-next/db/
+dujiao-next/logs/
+dujiao-next/uploads/
