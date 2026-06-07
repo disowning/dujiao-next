@@ -1,0 +1,1 @@
+import{g as r}from"./index-twOahFxq.js";import{J as o,S as s,I as c}from"./vendor-vue-CElhhEsS.js";const t={},a={class:"space-y-3"};function n(e,p){return o(),s("div",a,[c(e.$slots,"default")])}const d=r(t,[["render",n]]);export{d as C};

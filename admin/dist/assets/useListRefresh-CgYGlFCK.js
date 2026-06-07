@@ -1,0 +1,1 @@
+import{a5 as t,m as a}from"./vendor-vue-CElhhEsS.js";import{f}from"./index-twOahFxq.js";const u=()=>{const s=a(!1),{t:e}=t();return{refreshing:s,refreshList:async r=>{if(!s.value){s.value=!0;try{await r(),f(e("admin.common.refreshSuccess"))}finally{s.value=!1}}}}};export{u};
