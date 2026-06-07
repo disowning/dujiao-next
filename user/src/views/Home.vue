@@ -3,57 +3,66 @@
 
     <!-- ==================== LIST MODE ==================== -->
     <template v-if="templateMode === 'list'">
-      <!-- Hero Banner (shared with card mode) -->
-      <section v-if="showHeroSection" class="relative z-10 border-b theme-border pt-24 pb-10">
+      <!-- Commerce Hero -->
+      <section class="relative z-10 pt-24 pb-8">
         <div class="container mx-auto px-4">
-          <div class="relative overflow-hidden rounded-2xl border theme-panel"
+          <div class="home-commerce-hero"
             @touchstart="onBannerTouchStart"
             @touchend="onBannerTouchEnd">
-            <Transition name="banner-fade" mode="out-in">
-              <img v-if="!bannerLoading && heroImage" :src="heroImage" :key="heroImage" class="absolute inset-0 h-full w-full object-cover" />
-            </Transition>
-            <div class="absolute inset-0 bg-black/50"></div>
-            <div v-if="bannerLoading" class="relative flex min-h-[200px] flex-col justify-between p-5 sm:min-h-[240px] sm:p-6 md:min-h-[320px] md:p-10">
-              <div class="space-y-3">
-                <div class="h-5 w-24 theme-skeleton rounded-full" style="background: rgba(255,255,255,0.35)"></div>
-                <div class="h-8 max-w-3xl theme-skeleton rounded-xl md:h-10" style="background: rgba(255,255,255,0.35)"></div>
-                <div class="h-4 max-w-2xl theme-skeleton rounded-lg" style="background: rgba(255,255,255,0.3)"></div>
-              </div>
-            </div>
-            <div v-else class="relative flex min-h-[200px] flex-col justify-between p-5 sm:min-h-[240px] sm:p-6 md:min-h-[320px] md:p-10">
-              <div v-if="bannerCount > 1" class="mb-3 flex items-center justify-end gap-2">
-                <button type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-9 md:w-9"
-                  @click="handlePrevHeroBanner" :aria-label="t('common.previousBanner')">
-                  <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button type="button"
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-9 md:w-9"
-                  @click="handleNextHeroBanner" :aria-label="t('common.nextBanner')">
-                  <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <span class="theme-badge theme-badge-inverse gap-2 text-xs font-semibold uppercase tracking-wider">
+            <div class="relative z-10 grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+              <div>
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-semibold text-white/95 backdrop-blur">
                   <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
-                  {{ heroBadge }}
+                  {{ t('home.hero.badge') }}
                 </span>
-                <h1 class="max-w-4xl text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl md:text-3xl">
-                  {{ heroTitle }}
+                <h1 class="mt-5 max-w-3xl text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
+                  {{ t('home.hero.title') }}
                 </h1>
-                <p class="max-w-3xl text-xs leading-relaxed text-gray-100 sm:text-sm">
-                  {{ heroSubtitle }}
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-white/82 sm:text-base">
+                  {{ t('home.hero.subtitle') }}
                 </p>
+                <div class="mt-7 flex flex-wrap items-center gap-3">
+                  <button type="button" class="home-hero-primary" @click="scrollToProducts">
+                    {{ t('home.hero.cta') }}
+                  </button>
+                  <router-link to="/guest/orders" class="home-hero-secondary">
+                    {{ t('home.hero.queryOrders') }}
+                  </router-link>
+                </div>
               </div>
-              <div v-if="bannerCount > 1" class="mt-4 flex items-center gap-2">
-                <button v-for="(_, bIdx) in banners" :key="`list-dot-${bIdx}`" type="button"
-                  class="h-2 rounded-full transition-all"
-                  :class="bIdx === currentBannerIndex ? 'w-6 bg-white' : 'w-2 bg-white/45 hover:bg-white/70'"
-                  @click="selectHeroBanner(bIdx)"></button>
+              <div
+                class="home-hero-visual"
+                :class="{ 'cursor-pointer': hasHeroLink }"
+                @click="hasHeroLink && goToHeroLink()"
+              >
+                <Transition name="banner-fade" mode="out-in">
+                  <img v-if="!bannerLoading && heroImage" :src="heroImage" :key="heroImage" class="home-hero-image" />
+                </Transition>
+                <div class="relative z-10">
+                  <div class="text-xs font-semibold uppercase tracking-[0.24em] text-blue-100">JUXI SHOP</div>
+                  <div class="mt-3 text-2xl font-black text-white">{{ heroTitle }}</div>
+                  <div class="mt-2 line-clamp-2 text-sm text-white/75">{{ heroSubtitle }}</div>
+                  <div class="mt-6 grid grid-cols-2 gap-3">
+                    <div class="home-hero-stat">
+                      <span>{{ t('home.hero.statsPrimaryLabel') }}</span>
+                      <strong>{{ t('home.hero.statsPrimaryValue') }}</strong>
+                    </div>
+                    <div class="home-hero-stat">
+                      <span>{{ t('home.hero.statsSecondaryLabel') }}</span>
+                      <strong>{{ t('home.hero.statsSecondaryValue') }}</strong>
+                    </div>
+                  </div>
+                  <div v-if="bannerCount > 1" class="mt-5 flex items-center gap-2">
+                    <button
+                      v-for="(_, bIdx) in banners"
+                      :key="`list-dot-${bIdx}`"
+                      type="button"
+                      class="h-2 rounded-full transition-all"
+                      :class="bIdx === currentBannerIndex ? 'w-7 bg-white' : 'w-2 bg-white/45 hover:bg-white/70'"
+                      @click="selectHeroBanner(bIdx)"
+                    ></button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -61,7 +70,7 @@
       </section>
 
       <!-- Main: Left Categories + Right Product List -->
-      <section class="relative z-10 pb-6" :class="showHeroSection ? 'pt-6' : 'pt-24'">
+      <section id="featured" class="relative z-10 pb-6 pt-6">
         <div class="container mx-auto px-4">
           <div class="flex flex-col lg:flex-row gap-6">
 
@@ -162,13 +171,13 @@
               </div>
 
               <!-- Empty State -->
-              <div v-else class="text-center py-16 border theme-panel-soft rounded-2xl backdrop-blur-sm">
-                <svg class="w-16 h-16 mx-auto theme-text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                </svg>
-                <p class="theme-text-muted text-lg">{{ t('products.empty') }}</p>
-              </div>
+              <EmptyState
+                v-else
+                icon="package"
+                :title="t('home.featured.emptyTitle')"
+                :description="t('home.featured.emptyDescription')"
+                size="lg"
+              />
             </main>
           </div>
         </div>
@@ -177,126 +186,78 @@
 
     <!-- ==================== CARD MODE (default) ==================== -->
     <template v-else>
-    <section v-if="showHeroSection" class="relative z-10 border-b theme-border pt-24 pb-10">
+    <section class="relative z-10 pt-24 pb-8">
       <div class="container mx-auto px-4">
-        <div class="relative overflow-hidden rounded-2xl border theme-panel"
-          @touchstart="onBannerTouchStart"
-          @touchend="onBannerTouchEnd">
-          <!-- Banner image with fade transition -->
-          <Transition name="banner-fade" mode="out-in">
-            <img v-if="!bannerLoading && heroImage" :src="heroImage" :key="heroImage" class="absolute inset-0 h-full w-full object-cover" />
-          </Transition>
-          <div class="absolute inset-0 bg-black/50"></div>
-
-            <div v-if="bannerLoading" class="relative flex min-h-[260px] flex-col justify-between p-5 sm:min-h-[320px] sm:p-6 md:min-h-[420px] md:p-12">
-            <div class="mb-4 flex items-center justify-end">
-              <span class="theme-badge theme-badge-inverse text-xs font-medium">
-                {{ t('common.loading') }}
-              </span>
-            </div>
-
-            <div class="space-y-4">
-              <div class="h-6 w-28 theme-skeleton rounded-full" style="background: rgba(255,255,255,0.35)"></div>
-              <div class="h-10 max-w-4xl theme-skeleton rounded-xl md:h-14" style="background: rgba(255,255,255,0.35)"></div>
-              <div class="h-5 max-w-3xl theme-skeleton rounded-lg" style="background: rgba(255,255,255,0.3)"></div>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-3 pt-6">
-              <div class="h-11 w-36 theme-skeleton rounded-lg" style="background: rgba(255,255,255,0.35)"></div>
-              <div class="h-11 w-28 theme-skeleton rounded-lg" style="background: rgba(255,255,255,0.25)"></div>
-            </div>
-          </div>
-
-          <div v-else class="relative flex min-h-[260px] flex-col justify-between p-5 sm:min-h-[320px] sm:p-6 md:min-h-[420px] md:p-12">
-            <div v-if="bannerCount > 1" class="mb-4 flex items-center justify-end gap-2">
-              <button
-                type="button"
-                class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-10 md:w-10"
-                @click="handlePrevHeroBanner"
-                :aria-label="t('common.previousBanner')"
-              >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/20 text-white transition hover:bg-black/35 md:h-10 md:w-10"
-                @click="handleNextHeroBanner"
-                :aria-label="t('common.nextBanner')"
-              >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            <div class="space-y-3 sm:space-y-4">
-              <span class="theme-badge theme-badge-inverse gap-2 text-xs font-semibold uppercase tracking-wider">
+        <div class="home-commerce-hero" @touchstart="onBannerTouchStart" @touchend="onBannerTouchEnd">
+          <div class="relative z-10 grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-semibold text-white/95 backdrop-blur">
                 <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
-                {{ heroBadge }}
+                {{ t('home.hero.badge') }}
               </span>
-              <h1 class="max-w-4xl text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl md:text-[2.85rem]">
-                {{ heroTitle }}
+              <h1 class="mt-5 max-w-3xl text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
+                {{ t('home.hero.title') }}
               </h1>
-              <p class="max-w-3xl text-xs leading-relaxed text-gray-100 sm:text-sm md:text-base">
-                {{ heroSubtitle }}
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/82 sm:text-base">
+                {{ t('home.hero.subtitle') }}
               </p>
+              <div class="mt-7 flex flex-wrap items-center gap-3">
+                <button type="button" class="home-hero-primary" @click="scrollToProducts">{{ t('home.hero.cta') }}</button>
+                <router-link to="/guest/orders" class="home-hero-secondary">{{ t('home.hero.queryOrders') }}</router-link>
+              </div>
             </div>
-
-            <div class="flex flex-wrap items-center gap-3 pt-5 sm:pt-6">
-              <button
-                type="button"
-                @click="goToHeroLink"
-                class="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 transition hover:scale-105 sm:min-h-[44px] sm:px-5 sm:py-3"
-              >
-                {{ heroPrimaryButtonText }}
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-              <router-link
-                v-if="!hasHeroLink"
-                to="/products"
-                class="inline-flex min-h-[40px] items-center rounded-lg border border-white/30 px-4 py-2.5 text-sm font-medium text-white transition hover:border-white hover:bg-white/10 sm:min-h-[44px] sm:px-5 sm:py-3"
-              >
-                {{ t('home.featured.viewAll') }}
-              </router-link>
-            </div>
-
-            <div v-if="bannerCount > 1" class="mt-5 flex items-center gap-2">
-              <button
-                v-for="(_, index) in banners"
-                :key="`hero-dot-${index}`"
-                type="button"
-                class="h-2.5 rounded-full transition-all"
-                :class="index === currentBannerIndex ? 'w-7 bg-white' : 'w-2.5 bg-white/45 hover:bg-white/70'"
-                @click="selectHeroBanner(index)"
-                :aria-label="t('common.switchBanner', { n: index + 1 })"
-              ></button>
+            <div
+              class="home-hero-visual"
+              :class="{ 'cursor-pointer': hasHeroLink }"
+              @click="hasHeroLink && goToHeroLink()"
+            >
+              <Transition name="banner-fade" mode="out-in">
+                <img v-if="!bannerLoading && heroImage" :src="heroImage" :key="heroImage" class="home-hero-image" />
+              </Transition>
+              <div class="relative z-10">
+                <div class="text-xs font-semibold uppercase tracking-[0.24em] text-blue-100">JUXI SHOP</div>
+                <div class="mt-3 text-2xl font-black text-white">{{ heroTitle }}</div>
+                <div class="mt-2 line-clamp-2 text-sm text-white/75">{{ heroSubtitle }}</div>
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                  <div class="home-hero-stat"><span>{{ t('home.hero.statsPrimaryLabel') }}</span><strong>{{ t('home.hero.statsPrimaryValue') }}</strong></div>
+                  <div class="home-hero-stat"><span>{{ t('home.hero.statsSecondaryLabel') }}</span><strong>{{ t('home.hero.statsSecondaryValue') }}</strong></div>
+                </div>
+                <div v-if="bannerCount > 1" class="mt-5 flex items-center gap-2">
+                  <button
+                    v-for="(_, index) in banners"
+                    :key="`hero-dot-${index}`"
+                    type="button"
+                    class="h-2 rounded-full transition-all"
+                    :class="index === currentBannerIndex ? 'w-7 bg-white' : 'w-2 bg-white/45 hover:bg-white/70'"
+                    @click="selectHeroBanner(index)"
+                    :aria-label="t('common.switchBanner', { n: index + 1 })"
+                  ></button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="featured" class="relative z-10 pb-14" :class="showHeroSection ? 'pt-14' : 'pt-32 md:pt-36'">
+    <section id="featured" class="relative z-10 pb-14 pt-10">
       <div class="container mx-auto px-4">
         <div class="mb-8 flex items-end justify-between gap-4">
           <div>
+            <div class="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-blue-600">{{ t('home.featured.kicker') }}</div>
             <h2 class="theme-section-heading text-3xl md:text-4xl">{{ t('home.featured.title') }}</h2>
             <p class="mt-2 text-sm theme-text-secondary">{{ t('home.featured.description') }}</p>
           </div>
           <router-link
-                v-if="!hasHeroLink"
-                to="/products"
-            class="text-sm font-semibold theme-link-muted"
+            to="/products"
+            class="hidden items-center gap-2 rounded-full border theme-btn-secondary px-5 py-2.5 text-sm font-semibold sm:inline-flex"
           >
             {{ t('home.featured.viewAll') }}
+            <span aria-hidden="true">→</span>
           </router-link>
         </div>
 
-        <div v-if="products.length > 0" class="grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div v-if="products.length > 0" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <ProductCard
             v-for="(product, idx) in products"
             :key="product.id"
@@ -307,46 +268,61 @@
             @quick-buy="openQuickBuy"
           />
         </div>
-        <div v-else class="rounded-2xl border border-dashed theme-border py-16 text-center theme-text-muted theme-slide-up">
-          <svg class="mx-auto h-16 w-16 mb-4 theme-text-muted opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-          </svg>
-          {{ t('home.featured.empty') }}
-        </div>
+        <EmptyState
+          v-else
+          icon="package"
+          :title="t('home.featured.emptyTitle')"
+          :description="t('home.featured.emptyDescription')"
+          size="lg"
+        >
+          <template #action>
+            <router-link v-if="noticeEnabled" to="/notice" class="theme-btn-inline-md theme-btn-secondary border font-semibold">
+              {{ t('home.featured.notice') }}
+            </router-link>
+            <button type="button" class="theme-btn-inline-md theme-btn-primary font-semibold" @click="loadFeaturedProducts">
+              {{ t('home.featured.refresh') }}
+            </button>
+          </template>
+        </EmptyState>
       </div>
     </section>
 
     <template v-if="latestSectionVisible">
-    <hr class="theme-section-divider mx-4 md:mx-auto md:max-w-6xl" />
-
-    <section class="relative z-10 py-12">
+    <section class="relative z-10 pb-16 pt-4">
       <div class="container mx-auto px-4">
-        <div class="mb-6 flex items-end justify-between gap-4">
-          <div>
-            <h2 class="theme-section-heading text-[1.7rem]">{{ t('home.latest.title') }}</h2>
-            <p class="mt-1 text-sm theme-text-secondary">{{ t('home.latest.description') }}</p>
+        <div class="rounded-[28px] border theme-panel p-5 sm:p-8">
+          <div class="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <div class="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-violet-600">{{ t('home.latest.kicker') }}</div>
+              <h2 class="theme-section-heading text-[1.7rem]">{{ t('home.latest.title') }}</h2>
+              <p class="mt-1 text-sm theme-text-secondary">{{ t('home.latest.description') }}</p>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <router-link v-if="blogEnabled" to="/blog" class="rounded-full border theme-btn-secondary px-4 py-2">{{ t('nav.blog') }}</router-link>
+              <router-link v-if="noticeEnabled" to="/notice" class="rounded-full border theme-btn-secondary px-4 py-2">{{ t('nav.notice') }}</router-link>
+            </div>
           </div>
-          <div class="flex items-center gap-3 text-sm">
-            <router-link v-if="blogEnabled" to="/blog" class="theme-link-muted">{{ t('nav.blog') }}</router-link>
-            <router-link v-if="noticeEnabled" to="/notice" class="theme-link-muted">{{ t('nav.notice') }}</router-link>
-          </div>
-        </div>
 
-        <div v-if="posts.length > 0" class="grid grid-cols-1 gap-5 md:grid-cols-3">
-          <article
-            v-for="post in posts"
-            :key="post.id"
-            class="cursor-pointer rounded-xl border theme-panel p-5 transition hover:shadow-md"
-            @click="goToPost(post.slug)"
-          >
-            <div class="mb-2 text-xs theme-text-muted">{{ formatDate(post.published_at) }}</div>
-            <h3 class="line-clamp-2 text-base font-semibold">{{ getLocalizedText(post.title) }}</h3>
-            <p class="mt-2 line-clamp-2 text-sm theme-text-secondary">{{ getLocalizedText(post.summary) }}</p>
-            <div class="mt-4 text-sm font-medium theme-link">{{ t('blog.readMore') }}</div>
-          </article>
-        </div>
-        <div v-else class="rounded-2xl border border-dashed theme-border py-12 text-center theme-text-muted">
-          {{ t('blog.empty') }}
+          <div v-if="posts.length > 0" class="grid grid-cols-1 gap-5 md:grid-cols-3">
+            <article
+              v-for="post in posts"
+              :key="post.id"
+              class="cursor-pointer rounded-[22px] border bg-white p-5 transition-all theme-card-interactive"
+              @click="goToPost(post.slug)"
+            >
+              <div class="mb-3 inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">{{ formatDate(post.published_at) }}</div>
+              <h3 class="line-clamp-2 text-base font-bold theme-text-primary">{{ getLocalizedText(post.title) }}</h3>
+              <p class="mt-2 line-clamp-2 text-sm theme-text-secondary">{{ getLocalizedText(post.summary) }}</p>
+              <div class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-600">{{ t('blog.readMore') }} <span>→</span></div>
+            </article>
+          </div>
+          <EmptyState
+            v-else
+            icon="inbox"
+            :title="t('home.latest.emptyTitle')"
+            :description="t('home.latest.emptyDescription')"
+            variant="soft"
+          />
         </div>
       </div>
     </section>
@@ -387,6 +363,7 @@ import ProductQuickBuy from '../components/ProductQuickBuy.vue'
 import CategorySidebar from '../components/CategorySidebar.vue'
 import PaginationNav from '../components/PaginationNav.vue'
 import AnnouncementModal from '../components/AnnouncementModal.vue'
+import EmptyState from '../components/EmptyState.vue'
 import { useAnnouncement, type HomeAnnouncement } from '../composables/useAnnouncement'
 
 const router = useRouter()
@@ -421,16 +398,11 @@ const {
   bannerLoading,
   currentBannerIndex,
   bannerCount,
-  showHeroSection,
   heroImage,
-  heroBadge,
   heroTitle,
   heroSubtitle,
   hasHeroLink,
-  heroPrimaryButtonText,
   loadBanners,
-  handleNextHeroBanner,
-  handlePrevHeroBanner,
   selectHeroBanner,
   goToHeroLink,
   onBannerTouchStart,
@@ -493,6 +465,10 @@ const goToPost = (slug: string) => {
   router.push(`/blog/${slug}`)
 }
 
+const scrollToProducts = () => {
+  document.querySelector('#featured')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 const loadFeaturedProducts = async () => {
   try {
     const response = await productAPI.list({ page: 1, page_size: 15 })
@@ -541,6 +517,115 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.home-commerce-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  color: white;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(255, 255, 255, 0.22), transparent 16rem),
+    radial-gradient(circle at 72% 100%, rgba(56, 189, 248, 0.28), transparent 20rem),
+    linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  box-shadow: 0 24px 60px rgba(37, 99, 235, 0.22);
+}
+
+.home-commerce-hero::before,
+.home-commerce-hero::after {
+  position: absolute;
+  content: "";
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.home-commerce-hero::before {
+  width: 18rem;
+  height: 18rem;
+  right: -6rem;
+  top: -8rem;
+}
+
+.home-commerce-hero::after {
+  width: 11rem;
+  height: 11rem;
+  left: 42%;
+  bottom: -8rem;
+}
+
+.home-hero-primary,
+.home-hero-secondary {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.home-hero-primary {
+  background: white;
+  color: #1d4ed8;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18);
+}
+
+.home-hero-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  backdrop-filter: blur(12px);
+}
+
+.home-hero-primary:hover,
+.home-hero-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.22);
+}
+
+.home-hero-visual {
+  position: relative;
+  min-height: 16rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+}
+
+.home-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+  mix-blend-mode: luminosity;
+}
+
+.home-hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.home-hero-stat span {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.home-hero-stat strong {
+  font-size: 1.25rem;
+  color: white;
+}
+
 .banner-fade-enter-active,
 .banner-fade-leave-active {
   transition: opacity 300ms ease;
@@ -548,5 +633,23 @@ onUnmounted(() => {
 .banner-fade-enter-from,
 .banner-fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .home-commerce-hero {
+    border-radius: 22px;
+    padding: 1.75rem 1.25rem;
+  }
+
+  .home-hero-primary,
+  .home-hero-secondary {
+    flex: 1 1 auto;
+  }
+
+  .home-hero-visual {
+    min-height: 13rem;
+    border-radius: 20px;
+    padding: 1.25rem;
+  }
 }
 </style>

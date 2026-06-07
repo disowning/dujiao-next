@@ -92,10 +92,15 @@ const messages = {
         },
         home: {
             hero: {
-                title: '聚禧小铺',
-                subtitle: '专业的产品与服务提供商',
-                cta: '浏览商品',
-                badge: '新一代数字商店',
+                title: '聚禧小铺 · 数字商品自助购买',
+                subtitle: '精选优质数字商品，自动发货，安全便捷，订单实时查询。',
+                cta: '立即选购',
+                queryOrders: '查询订单',
+                badge: '数字商品自动发货',
+                statsPrimaryLabel: '优质商品',
+                statsPrimaryValue: '精选',
+                statsSecondaryLabel: '订单状态',
+                statsSecondaryValue: '实时',
             },
             stats: {
                 activeUsers: '活跃用户',
@@ -105,9 +110,14 @@ const messages = {
             },
             featured: {
                 title: '精选商品',
-                description: '探索我们精心挑选的优质数字资产系列。',
+                kicker: '数字商品',
+                description: '热门数字商品，选购后快速交付。',
                 empty: '暂无商品',
-                viewAll: '查看全部商品',
+                emptyTitle: '商品正在整理中',
+                emptyDescription: '店主正在上架新的数字商品，请稍后回来看看。',
+                viewAll: '查看所有商品',
+                notice: '查看公告',
+                refresh: '刷新',
             },
             cta: {
                 title: '准备好开始了吗？',
@@ -115,8 +125,11 @@ const messages = {
                 button: '查看所有商品',
             },
             latest: {
-                title: '最新动态',
-                description: '随时掌握我们的最新消息和公告',
+                kicker: '最新动态',
+                title: '最新公告',
+                description: '了解上新、维护和商城最新动态。',
+                emptyTitle: '暂无公告',
+                emptyDescription: '有新的公告内容时会显示在这里。',
             },
         },
         products: {
@@ -1195,10 +1208,15 @@ const messages = {
         },
         home: {
             hero: {
-                title: '聚禧小铺',
-                subtitle: '專業的產品與服務提供商',
-                cta: '瀏覽商品',
-                badge: '新一代數位商店',
+                title: '聚禧小铺 · 數位商品自助購買',
+                subtitle: '精選優質數位商品，自動發貨，安全便捷，訂單即時查詢。',
+                cta: '立即選購',
+                queryOrders: '查詢訂單',
+                badge: '數位商品自動發貨',
+                statsPrimaryLabel: '優質商品',
+                statsPrimaryValue: '精選',
+                statsSecondaryLabel: '訂單狀態',
+                statsSecondaryValue: '即時',
             },
             stats: {
                 activeUsers: '活躍用戶',
@@ -1208,9 +1226,14 @@ const messages = {
             },
             featured: {
                 title: '精選商品',
-                description: '探索我們精心挑選的優質數位資產系列。',
+                kicker: '數位商品',
+                description: '熱門數位商品，選購後快速交付。',
                 empty: '暫無商品',
-                viewAll: '查看全部商品',
+                emptyTitle: '商品正在整理中',
+                emptyDescription: '店主正在上架新的數位商品，請稍後回來看看。',
+                viewAll: '查看所有商品',
+                notice: '查看公告',
+                refresh: '刷新',
             },
             cta: {
                 title: '準備好開始了嗎？',
@@ -1218,8 +1241,11 @@ const messages = {
                 button: '查看所有商品',
             },
             latest: {
-                title: '最新動態',
-                description: '隨時掌握我們的最新消息和公告',
+                kicker: '最新動態',
+                title: '最新公告',
+                description: '了解上新、維護和商城最新動態。',
+                emptyTitle: '暫無公告',
+                emptyDescription: '有新的公告內容時會顯示在這裡。',
             },
         },
         products: {
@@ -2298,10 +2324,15 @@ const messages = {
         },
         home: {
             hero: {
-                title: '聚禧小铺',
-                subtitle: 'Professional Products and Services Provider',
-                cta: 'Browse Products',
-                badge: 'Next Gen Digital Store',
+                title: 'Juxi Shop · Self-Service Digital Goods',
+                subtitle: 'Curated digital goods with automatic delivery, secure checkout, and real-time order lookup.',
+                cta: 'Shop Now',
+                queryOrders: 'Find Orders',
+                badge: 'Automatic Digital Delivery',
+                statsPrimaryLabel: 'Premium Goods',
+                statsPrimaryValue: 'Curated',
+                statsSecondaryLabel: 'Order Status',
+                statsSecondaryValue: 'Live',
             },
             stats: {
                 activeUsers: 'Active Users',
@@ -2311,9 +2342,14 @@ const messages = {
             },
             featured: {
                 title: 'Featured Products',
-                description: 'Discover our premium collection of digital assets, curated for excellence.',
+                kicker: 'Digital Goods',
+                description: 'Popular digital goods with fast delivery after purchase.',
                 empty: 'No products available',
+                emptyTitle: 'Products Are Being Prepared',
+                emptyDescription: 'New digital goods are being listed. Please check back soon.',
                 viewAll: 'View All Products',
+                notice: 'View Notices',
+                refresh: 'Refresh',
             },
             cta: {
                 title: 'Ready to Start?',
@@ -2321,8 +2357,11 @@ const messages = {
                 button: 'View All Products',
             },
             latest: {
-                title: 'Latest Updates',
-                description: 'Stay updated with our latest news and announcements',
+                kicker: 'Updates',
+                title: 'Latest Notices',
+                description: 'See new arrivals, maintenance updates, and store announcements.',
+                emptyTitle: 'No Notices Yet',
+                emptyDescription: 'New announcements will appear here when available.',
             },
         },
         products: {

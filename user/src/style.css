@@ -53,25 +53,27 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Plus Jakarta Sans", "HarmonyOS Sans", "MiSans", "Microsoft YaHei", system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  --ui-bg-page: #f5f5f7;
+  --ui-bg-page: #f6f8fc;
   --ui-bg-elevated: #ffffff;
-  --ui-bg-soft: #f2f2f4;
-  --ui-bg-muted: #ececf0;
-  --ui-bg-overlay: rgba(255, 255, 255, 0.8);
-  --ui-bg-overlay-strong: rgba(255, 255, 255, 0.92);
-  --ui-text-primary: #1d1d1f;
-  --ui-text-secondary: #424245;
-  --ui-text-muted: #6e6e73;
+  --ui-bg-soft: #eef4ff;
+  --ui-bg-muted: #e8eef8;
+  --ui-bg-overlay: rgba(255, 255, 255, 0.82);
+  --ui-bg-overlay-strong: rgba(255, 255, 255, 0.94);
+  --ui-text-primary: #111827;
+  --ui-text-secondary: #374151;
+  --ui-text-muted: #6b7280;
   --ui-text-on-accent: #ffffff;
-  --ui-border: rgba(0, 0, 0, 0.12);
-  --ui-border-strong: rgba(0, 0, 0, 0.2);
-  --ui-accent: #0071e3;
-  --ui-accent-hover: #0067d2;
-  --ui-accent-soft: rgba(0, 113, 227, 0.14);
+  --ui-border: rgba(229, 231, 235, 0.9);
+  --ui-border-strong: rgba(148, 163, 184, 0.36);
+  --ui-accent: #2563eb;
+  --ui-accent-hover: #1d4ed8;
+  --ui-accent-secondary: #7c3aed;
+  --ui-accent-soft: rgba(37, 99, 235, 0.12);
+  --ui-accent-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
   --ui-success: #2f8f6f;
   --ui-success-soft: rgba(47, 143, 111, 0.14);
   --ui-warning: #b06b00;
@@ -80,16 +82,16 @@
   --ui-danger-soft: rgba(201, 52, 47, 0.15);
   --ui-info: #0a84ff;
   --ui-info-soft: rgba(10, 132, 255, 0.14);
-  --ui-focus-ring: rgba(0, 113, 227, 0.22);
+  --ui-focus-ring: rgba(37, 99, 235, 0.22);
   --ui-radius-sm: 0.5rem;
   --ui-radius-md: 0.75rem;
-  --ui-radius-lg: 1rem;
-  --ui-radius-xl: 1.5rem;
-  --ui-shadow-1: 0 10px 24px -18px rgba(0, 0, 0, 0.26);
-  --ui-shadow-2: 0 18px 38px -24px rgba(0, 0, 0, 0.3);
-  --ui-shadow-3: 0 30px 64px -34px rgba(0, 0, 0, 0.36);
-  --ui-shadow-soft: 0 12px 30px -24px rgba(0, 0, 0, 0.28);
-  --ui-shadow-card: 0 24px 52px -32px rgba(0, 0, 0, 0.35);
+  --ui-radius-lg: 1.375rem;
+  --ui-radius-xl: 1.75rem;
+  --ui-shadow-1: 0 12px 35px rgba(15, 23, 42, 0.06);
+  --ui-shadow-2: 0 18px 45px rgba(15, 23, 42, 0.1);
+  --ui-shadow-3: 0 24px 60px rgba(37, 99, 235, 0.18);
+  --ui-shadow-soft: 0 12px 35px rgba(15, 23, 42, 0.06);
+  --ui-shadow-card: 0 18px 45px rgba(15, 23, 42, 0.1);
   --ui-leading-display: 1.1;
   --ui-leading-title: 1.2;
   --ui-leading-body: 1.62;
@@ -185,6 +187,14 @@ body {
   color: var(--ui-text-primary);
 }
 
+body {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.12), transparent 28rem),
+    radial-gradient(circle at 88% 8%, rgba(124, 58, 237, 0.1), transparent 24rem),
+    var(--ui-bg-page);
+  overflow-x: hidden;
+}
+
 html[data-telegram-mini-app="true"],
 html[data-telegram-mini-app="true"] body {
   min-height: var(--tg-viewport-stable-height);
@@ -236,14 +246,16 @@ html[data-telegram-mini-app="true"] body {
 
 @layer components {
   .theme-page {
-    background-color: var(--ui-bg-page);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(246, 248, 252, 0) 18rem),
+      var(--ui-bg-page);
     color: var(--ui-text-primary);
   }
 
   .theme-panel {
     background-color: var(--ui-bg-elevated);
     border-color: var(--ui-border);
-    box-shadow: var(--ui-shadow-1);
+    box-shadow: var(--ui-shadow-soft);
   }
 
   .theme-panel-soft {
@@ -301,17 +313,18 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-btn-primary {
-    background-color: var(--ui-accent);
+    background: var(--ui-accent-gradient);
     color: var(--ui-text-on-accent);
-    border-color: var(--ui-accent);
-    box-shadow: 0 10px 24px -18px color-mix(in oklab, var(--ui-accent) 55%, transparent);
+    border-color: transparent;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
     font-weight: 600;
   }
 
   .theme-btn-primary:hover {
-    background-color: var(--ui-accent-hover);
-    border-color: var(--ui-accent-hover);
-    box-shadow: 0 14px 28px -20px color-mix(in oklab, var(--ui-accent-hover) 58%, transparent);
+    background: var(--ui-accent-gradient);
+    border-color: transparent;
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.32);
+    transform: translateY(-1px);
   }
 
   .theme-btn-neutral {
@@ -327,8 +340,8 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-btn-secondary {
-    background-color: var(--ui-bg-soft);
-    color: var(--ui-text-secondary);
+    background-color: var(--ui-bg-elevated);
+    color: var(--ui-text-primary);
     border-color: var(--ui-border);
     font-weight: 500;
   }
@@ -391,12 +404,12 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-wordmark {
-    @apply inline-flex items-center rounded-xl border px-3.5 sm:px-4;
-    min-height: 2.5rem;
+    @apply inline-flex items-center rounded-full border px-2.5 pr-4;
+    min-height: 2.75rem;
     max-width: min(56vw, 20rem);
-    background-color: color-mix(in oklab, var(--ui-bg-elevated) 90%, var(--ui-accent-soft) 10%);
-    border-color: color-mix(in oklab, var(--ui-accent) 22%, var(--ui-border));
-    box-shadow: var(--ui-shadow-1);
+    background-color: rgba(255, 255, 255, 0.86);
+    border-color: rgba(229, 231, 235, 0.95);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     color: var(--ui-text-primary);
     transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
@@ -414,8 +427,8 @@ html[data-telegram-mini-app="true"] body {
 
   .theme-wordmark-text {
     @apply block;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.02rem;
+    font-weight: 800;
     letter-spacing: -0.018em;
     line-height: 1;
     white-space: nowrap;
@@ -423,16 +436,23 @@ html[data-telegram-mini-app="true"] body {
     text-overflow: ellipsis;
   }
 
+  .theme-wordmark-mark {
+    @apply mr-2 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-black text-white;
+    background: var(--ui-accent-gradient);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.28);
+  }
+
   .theme-nav-link {
-    @apply inline-flex items-center rounded-lg border border-transparent px-3 py-2 text-xs font-medium;
+    @apply inline-flex items-center rounded-full border border-transparent px-3.5 py-2 text-xs font-semibold;
     color: var(--ui-text-muted);
-    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .theme-nav-link:hover {
     color: var(--ui-text-primary);
-    border-color: var(--ui-border);
-    background-color: var(--ui-bg-soft);
+    border-color: rgba(229, 231, 235, 0.9);
+    background-color: rgba(255, 255, 255, 0.76);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
   }
 
   .theme-nav-link:focus-visible {
@@ -441,9 +461,10 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-nav-link-active {
-    color: var(--ui-accent) !important;
-    border-color: color-mix(in oklab, var(--ui-accent) 36%, transparent) !important;
-    background-color: var(--ui-accent-soft) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    background: var(--ui-accent-gradient) !important;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24);
   }
 
   .theme-nav-badge {
@@ -473,7 +494,7 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-btn-inline-md {
-    @apply inline-flex items-center justify-center rounded-xl px-4 text-sm;
+    @apply inline-flex items-center justify-center rounded-full px-5 text-sm;
     min-height: 2.75rem;
   }
 
@@ -536,9 +557,9 @@ html[data-telegram-mini-app="true"] body {
   }
 
   .theme-card-interactive:hover {
-    border-color: color-mix(in oklab, var(--ui-accent) 34%, transparent);
-    transform: translateY(-0.25rem);
-    box-shadow: 0 20px 36px -28px color-mix(in oklab, var(--ui-accent) 28%, rgba(0, 0, 0, 0.24));
+    border-color: rgba(191, 219, 254, 0.9);
+    transform: translateY(-3px);
+    box-shadow: var(--ui-shadow-card);
   }
 
   .theme-selected-surface {

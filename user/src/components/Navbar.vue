@@ -1,12 +1,13 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 theme-panel-soft border-b theme-border backdrop-blur-md transition-all"
-    :class="scrolled ? 'py-2 shadow-lg' : 'py-4'"
+    class="fixed top-0 left-0 right-0 z-50 border-b theme-border bg-white/80 backdrop-blur-xl transition-all"
+    :class="scrolled ? 'py-2 shadow-lg' : 'py-3'"
     :style="{ transitionDuration: 'var(--ui-duration-normal)' }">
     <div class="container mx-auto px-4 flex items-center justify-between gap-4">
       <!-- Logo -->
       <router-link to="/" class="theme-wordmark group relative" :title="brandSiteName">
-        <span class="theme-wordmark-text">{{ brandSiteName }}</span>
+        <span class="theme-wordmark-mark">禧</span>
+        <span class="theme-wordmark-text">聚禧小铺</span>
       </router-link>
 
       <!-- Desktop Menu -->
@@ -34,7 +35,7 @@
       <div class="flex items-center shrink-0 space-x-2 lg:space-x-4">
         <!-- Cart (desktop only, mobile has bottom nav) -->
         <router-link to="/cart"
-          class="hidden lg:flex theme-nav-link relative gap-2 px-3 min-w-[44px] min-h-[44px] items-center justify-center whitespace-nowrap">
+          class="hidden lg:flex theme-nav-link relative gap-2 min-w-[44px] min-h-[44px] items-center justify-center whitespace-nowrap">
           <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.3 2.6a1 1 0 00.9 1.4H19M7 13l.4 2M10 21a1 1 0 100-2 1 1 0 000 2zm8 1a1 1 0 100-2 1 1 0 000 2z" />

@@ -1,13 +1,13 @@
 <template>
   <div
-    class="group relative theme-panel rounded-2xl border transition-all overflow-hidden flex flex-col h-full theme-slide-up"
+    class="group relative theme-panel rounded-[22px] border transition-all overflow-hidden flex flex-col h-full theme-slide-up"
     :class="isSoldOut(product)
       ? 'cursor-default opacity-85 grayscale-[0.25] saturate-50 border-rose-300/60 dark:border-rose-900/40'
       : 'cursor-pointer theme-card-interactive'"
     :style="{ animationDelay: `${index * animationStep}ms` }"
     @click="$emit('click', product.slug)">
     <!-- Image Area -->
-    <div class="aspect-[4/3] overflow-hidden theme-surface-muted relative shrink-0">
+    <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br from-blue-50 via-white to-violet-50 relative shrink-0">
       <div
         class="absolute inset-0 z-10 transition-colors duration-300"
         :class="isSoldOut(product) ? 'bg-black/15' : 'bg-black/15 group-hover:bg-black/5'"
@@ -45,7 +45,7 @@
 
     <!-- Content Area -->
     <div class="p-3 md:p-4 relative z-20 flex flex-col flex-1">
-      <div v-if="product.category?.name" class="text-xs theme-text-muted uppercase tracking-wider mb-1 md:mb-2 truncate">
+      <div v-if="product.category?.name" class="text-xs theme-text-muted tracking-wide mb-1 md:mb-2 truncate">
         {{ t('products.categoryLabel') }} · {{ getLocalizedText(product.category.name) }}
       </div>
       <h3 class="text-sm md:text-lg font-bold theme-text-primary mb-1 md:mb-2 transition-colors line-clamp-1">
@@ -96,7 +96,7 @@
         {{ getLocalizedText(product.description) }}
       </p>
 
-      <div class="flex items-center justify-between border-t theme-border pt-2 md:pt-4 mt-auto">
+      <div class="mt-auto flex items-center justify-between gap-3 rounded-2xl border border-blue-100/70 bg-gradient-to-br from-blue-50/80 to-violet-50/70 p-3">
         <div class="flex flex-col">
           <span class="hidden md:block text-xs theme-text-muted uppercase tracking-wider">{{ t('products.price') }}</span>
           <span
@@ -139,10 +139,10 @@
           <button
             type="button"
             :aria-label="t('products.quickBuyAria')"
-            class="relative flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-lg border transition-all"
+            class="relative inline-flex h-9 items-center justify-center gap-1.5 rounded-full border px-3 text-xs font-bold transition-all md:h-10 md:px-4"
             :class="isSoldOut(product)
               ? 'opacity-40 cursor-not-allowed border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600'
-              : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:text-gray-900 hover:border-gray-400 hover:bg-gray-100 dark:hover:text-white dark:hover:border-gray-500 dark:hover:bg-gray-800'"
+              : 'border-transparent bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-[0_10px_22px_rgba(37,99,235,0.22)] hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(37,99,235,0.3)]'"
             :disabled="isSoldOut(product)"
             :aria-disabled="isSoldOut(product)"
             @click.stop="$emit('quickBuy', product)"
@@ -150,6 +150,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
             </svg>
+            <span>{{ t('products.buyNow') }}</span>
           </button>
           <!-- Desktop: view details -->
           <span

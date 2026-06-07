@@ -1,18 +1,20 @@
 <template>
   <div
-    class="text-center backdrop-blur-sm theme-slide-up"
+    class="text-center backdrop-blur-sm theme-slide-up shadow-sm"
     :class="[
       variant === 'soft' ? 'theme-panel-soft border' : 'theme-panel border',
       sizeClass,
     ]"
   >
     <div class="flex justify-center" :class="iconWrapperClass">
+      <div class="inline-flex rounded-3xl bg-gradient-to-br from-blue-50 to-violet-50 p-4 ring-1 ring-blue-100/80">
       <slot name="icon">
         <component :is="resolvedIcon" :class="iconClass" aria-hidden="true" />
       </slot>
+      </div>
     </div>
 
-    <p v-if="title" class="theme-text-secondary font-medium" :class="titleClass">{{ title }}</p>
+    <p v-if="title" class="theme-text-primary font-bold" :class="titleClass">{{ title }}</p>
     <p v-if="description" class="theme-text-muted mt-2 mx-auto" :class="descriptionClass">
       {{ description }}
     </p>
@@ -77,18 +79,18 @@ const hasAction = computed(
 const sizeClass = computed(() => {
   switch (props.size) {
     case 'sm':
-      return 'rounded-2xl p-8'
+      return 'rounded-[22px] p-8'
     case 'lg':
       return 'rounded-3xl p-16'
     default:
-      return 'rounded-2xl p-12'
+      return 'rounded-[22px] p-12'
   }
 })
 
 const iconWrapperClass = computed(() => (props.size === 'sm' ? 'mb-3' : 'mb-5'))
 
 const iconClass = computed(() => {
-  const base = 'theme-text-muted opacity-70'
+  const base = 'text-blue-600 opacity-90'
   if (props.size === 'sm') return `w-12 h-12 ${base}`
   if (props.size === 'lg') return `w-24 h-24 ${base}`
   return `w-16 h-16 ${base}`
