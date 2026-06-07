@@ -1,7 +1,7 @@
 <template>
   <!-- Mobile Filter Button -->
   <button @click="$emit('update:showDrawer', true)"
-    class="lg:hidden flex items-center justify-center gap-2 px-4 py-3 rounded-xl border theme-btn-secondary text-sm font-medium min-h-[44px]">
+    class="lg:hidden inline-flex items-center justify-center gap-2 rounded-full border theme-btn-secondary px-5 py-3 text-sm font-semibold min-h-[44px] shadow-sm">
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -54,7 +54,7 @@
           </label>
           <div class="mt-3 flex items-center gap-2">
             <input :value="searchQuery" @input="$emit('update:searchQuery', ($event.target as HTMLInputElement).value)" type="text"
-              class="min-w-0 flex-1 form-input"
+              class="category-search-input min-w-0 flex-1 form-input"
               :placeholder="t('products.searchPlaceholder')" />
             <button v-if="searchQuery" type="button" @click="$emit('clearSearch')"
               class="shrink-0 whitespace-nowrap px-3 py-2.5 rounded-xl border theme-btn-secondary text-xs">
@@ -69,7 +69,7 @@
         <ul class="space-y-2">
           <li>
             <button @click="$emit('selectCategory', null, true)"
-              class="w-full text-left px-4 py-3 rounded-xl transition-all duration-300 border min-h-[44px]"
+              class="category-filter-button w-full text-left px-4 py-3 transition-all duration-300 border min-h-[44px]"
               :class="selectedCategory === null
                 ? 'theme-btn-primary border border-transparent'
                 : 'border-transparent theme-text-secondary hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'">
@@ -80,7 +80,7 @@
             <div class="space-y-2">
               <div class="flex items-stretch gap-2">
                 <button @click="$emit('selectCategory', group.id, true)"
-                  class="flex-1 min-w-0 text-left px-4 py-3 rounded-xl transition-all duration-300 border flex items-center gap-2 min-h-[44px]"
+                  class="category-filter-button flex-1 min-w-0 text-left px-4 py-3 transition-all duration-300 border flex items-center gap-2 min-h-[44px]"
                   :class="selectedCategory === group.id
                     ? 'theme-btn-primary border border-transparent'
                     : 'border-transparent theme-text-secondary hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'">
@@ -106,7 +106,7 @@
               <ul v-if="group.children.length > 0 && expandedParentIds.includes(group.id)" class="space-y-2 pl-4">
                 <li v-for="child in group.children" :key="child.id">
                   <button @click="$emit('selectCategory', child.id, true)"
-                    class="w-full text-left px-4 py-3 rounded-xl transition-all duration-300 border flex items-center gap-2 min-h-[44px]"
+                    class="category-filter-button w-full text-left px-4 py-3 transition-all duration-300 border flex items-center gap-2 min-h-[44px]"
                     :class="selectedCategory === child.id
                       ? 'theme-btn-primary border border-transparent'
                       : 'border-transparent theme-text-secondary hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5'">
@@ -125,8 +125,8 @@
   </Transition>
 
   <!-- Desktop Sidebar -->
-  <aside class="hidden lg:block flex-shrink-0" :class="compact ? 'lg:w-60' : 'lg:w-64'">
-    <div class="theme-panel backdrop-blur-xl border rounded-2xl sticky top-24" :class="compact ? 'p-5' : 'p-6'">
+  <aside class="hidden lg:block flex-shrink-0" :class="compact ? 'lg:w-60' : 'lg:w-72'">
+    <div class="category-sidebar-card theme-panel backdrop-blur-xl border sticky top-28" :class="compact ? 'p-5' : 'p-6'">
       <!-- Search (desktop, only for Products page) -->
       <div v-if="showSearch" :class="compact ? 'mb-4' : 'mb-6'">
         <label class="text-xs font-semibold uppercase tracking-wider theme-text-muted">
@@ -134,7 +134,7 @@
         </label>
         <div class="mt-3 flex items-center gap-2">
           <input :value="searchQuery" @input="$emit('update:searchQuery', ($event.target as HTMLInputElement).value)" type="text"
-            class="min-w-0 flex-1 form-input"
+            class="category-search-input min-w-0 flex-1 form-input"
             :placeholder="t('products.searchPlaceholder')" />
           <button v-if="searchQuery" type="button" @click="$emit('clearSearch')"
             class="shrink-0 whitespace-nowrap px-3 py-2.5 rounded-xl border theme-btn-secondary text-xs">
@@ -152,7 +152,7 @@
       <ul :class="compact ? 'space-y-1.5' : 'space-y-2'">
         <li>
           <button @click="$emit('selectCategory', null)"
-            class="w-full text-left rounded-xl transition-all duration-300 border"
+            class="category-filter-button w-full text-left transition-all duration-300 border"
             :class="[
               compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3',
               selectedCategory === null
@@ -166,7 +166,7 @@
           <div :class="compact ? 'space-y-1.5' : 'space-y-2'">
             <div class="flex items-stretch" :class="compact ? 'gap-1.5' : 'gap-2'">
               <button @click="$emit('selectCategory', group.id)"
-                class="flex-1 min-w-0 text-left rounded-xl transition-all duration-300 border flex items-center gap-2"
+                class="category-filter-button flex-1 min-w-0 text-left transition-all duration-300 border flex items-center gap-2"
                 :class="[
                   compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3',
                   selectedCategory === group.id
@@ -203,7 +203,7 @@
               :class="compact ? 'space-y-1.5 pl-3' : 'space-y-2 pl-4'">
               <li v-for="child in group.children" :key="child.id">
                 <button @click="$emit('selectCategory', child.id)"
-                  class="w-full text-left rounded-xl transition-all duration-300 border flex items-center gap-2"
+                  class="category-filter-button w-full text-left transition-all duration-300 border flex items-center gap-2"
                   :class="[
                     compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3',
                     selectedCategory === child.id
@@ -252,3 +252,21 @@ defineEmits<{
   'clearSearch': []
 }>()
 </script>
+
+<style scoped>
+.category-sidebar-card {
+  border-radius: 22px;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+}
+
+.category-search-input {
+  border-radius: 999px;
+  background: var(--ui-bg-elevated);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+}
+
+.category-filter-button {
+  border-radius: 999px;
+  font-weight: 650;
+}
+</style>

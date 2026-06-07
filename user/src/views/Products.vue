@@ -1,15 +1,18 @@
 <template>
-  <div class="products-page min-h-screen theme-page pt-20 pb-16">
+  <div class="products-page min-h-screen theme-page pt-24 pb-16">
     <div class="container mx-auto px-4">
       <!-- Page Header -->
-      <div class="mb-12 mt-12 text-center">
-        <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight theme-text-primary">{{ t('nav.products') }}</h1>
-        <p class="theme-text-secondary max-w-2xl mx-auto text-lg border-b theme-border pb-8">
-          {{ t('products.subtitle') }}
-        </p>
+      <div class="products-heading mb-8 mt-8">
+        <div>
+          <span class="products-kicker">{{ t('products.kicker') }}</span>
+          <h1 class="mt-3 text-3xl font-black tracking-[-0.04em] theme-text-primary md:text-5xl">{{ t('nav.products') }}</h1>
+          <p class="mt-3 max-w-2xl text-sm leading-7 theme-text-secondary md:text-base">
+            {{ t('products.subtitle') }}
+          </p>
+        </div>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8">
+      <div class="flex flex-col gap-6 lg:flex-row lg:gap-8">
         <CategorySidebar
           :categories="categoryGroups"
           :selected-category="selectedCategory"
@@ -25,24 +28,28 @@
         />
 
         <!-- Main Content - Products Grid -->
-        <main class="flex-1">
+        <main class="min-w-0 flex-1">
           <!-- Loading Skeleton -->
-          <div v-if="loading" class="grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div v-if="loading" class="products-shop-grid">
             <div v-for="i in 6" :key="i"
-              class="theme-panel rounded-2xl border overflow-hidden flex flex-col">
-              <div class="h-36 md:h-56 theme-skeleton"></div>
-              <div class="p-3 md:p-5 space-y-3">
-                <div class="h-3 w-16 rounded theme-skeleton"></div>
-                <div class="h-5 w-3/4 rounded theme-skeleton"></div>
-                <div class="flex gap-2">
-                  <div class="h-5 w-14 rounded-full theme-skeleton"></div>
-                  <div class="h-5 w-14 rounded-full theme-skeleton"></div>
+              class="products-skeleton-card">
+              <div class="products-skeleton-media">
+                <div class="products-skeleton-chip"></div>
+              </div>
+              <div class="space-y-4 p-5">
+                <div class="products-skeleton-line w-20"></div>
+                <div class="products-skeleton-line h-5 w-4/5"></div>
+                <div class="flex gap-2.5">
+                  <div class="products-skeleton-pill"></div>
+                  <div class="products-skeleton-pill w-20"></div>
                 </div>
-                <div class="h-3 w-full rounded theme-skeleton"></div>
-                <div class="h-3 w-2/3 rounded theme-skeleton"></div>
-                <div class="border-t theme-border pt-3 flex justify-between items-center">
-                  <div class="h-6 w-20 rounded theme-skeleton"></div>
-                  <div class="h-4 w-16 rounded theme-skeleton"></div>
+                <div class="space-y-2">
+                  <div class="products-skeleton-line"></div>
+                  <div class="products-skeleton-line w-2/3"></div>
+                </div>
+                <div class="products-skeleton-footer">
+                  <div class="products-skeleton-line h-6 w-24"></div>
+                  <div class="products-skeleton-button"></div>
                 </div>
               </div>
             </div>
@@ -50,7 +57,7 @@
 
           <!-- Products Grid -->
           <div v-else-if="products.length > 0">
-            <div class="grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4">
+            <div class="products-shop-grid">
               <ProductCard
                 v-for="(product, idx) in products"
                 :key="product.id"
@@ -75,17 +82,29 @@
           <EmptyState
             v-else
             variant="soft"
-            size="lg"
+            size="md"
             :icon="(searchQuery || selectedCategory) ? 'search' : 'package'"
             :title="(searchQuery || selectedCategory) ? t('products.emptyFiltered') : t('products.empty')"
+            :description="(searchQuery || selectedCategory) ? t('products.emptyFilteredDescription') : t('products.emptyDescription')"
           >
-            <template v-if="searchQuery || selectedCategory" #action>
+            <template #action>
               <button
+                v-if="searchQuery || selectedCategory"
                 class="theme-btn-inline-md border theme-btn-secondary font-semibold"
                 @click="clearSearch(); selectCategory(null)"
               >
                 {{ t('products.clearFilters') }}
               </button>
+              <button
+                v-else
+                class="theme-btn-inline-md theme-btn-primary font-semibold"
+                @click="initialize"
+              >
+                {{ t('products.refreshProducts') }}
+              </button>
+              <router-link to="/" class="theme-btn-inline-md border theme-btn-secondary font-semibold">
+                {{ t('common.backHome') }}
+              </router-link>
             </template>
           </EmptyState>
         </main>
@@ -184,6 +203,125 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.products-heading {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(124, 58, 237, 0.13), transparent 28%),
+    radial-gradient(circle at 8% 12%, rgba(37, 99, 235, 0.12), transparent 30%),
+    var(--ui-bg-overlay-strong);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+  padding: 28px;
+}
+
+.products-kicker {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.09);
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  padding: 0.45rem 0.85rem;
+  text-transform: uppercase;
+}
+
+.products-shop-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.products-skeleton-card {
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 22px;
+  background: var(--ui-bg-elevated);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
+}
+
+.products-skeleton-media {
+  position: relative;
+  height: 13rem;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(37, 99, 235, 0.12), transparent 28%),
+    linear-gradient(135deg, var(--ui-bg-soft) 0%, rgba(37, 99, 235, 0.08) 100%);
+}
+
+.products-skeleton-chip {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 4.75rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.products-skeleton-line,
+.products-skeleton-pill,
+.products-skeleton-button {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 37%, #eef2f7 63%);
+  background-size: 400% 100%;
+  animation: products-skeleton-loading 1.4s ease infinite;
+}
+
+.products-skeleton-line {
+  height: 0.75rem;
+  width: 100%;
+}
+
+.products-skeleton-pill {
+  height: 1.5rem;
+  width: 4rem;
+}
+
+.products-skeleton-button {
+  height: 2.25rem;
+  width: 2.25rem;
+}
+
+.products-skeleton-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(226, 232, 240, 0.82);
+  padding-top: 1rem;
+}
+
+@keyframes products-skeleton-loading {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@media (min-width: 640px) {
+  .products-shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .products-shop-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1536px) {
+  .products-shop-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .products-heading {
+    padding: 22px;
+  }
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;

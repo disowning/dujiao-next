@@ -1,9 +1,9 @@
 <template>
   <nav
-    class="fixed top-0 left-0 right-0 z-50 border-b theme-border bg-white/80 backdrop-blur-xl transition-all"
-    :class="scrolled ? 'py-2 shadow-lg' : 'py-3'"
+    class="fixed top-0 left-0 right-0 z-50 px-3 py-3 transition-all"
+    :class="scrolled ? 'theme-navbar-floating-scrolled' : ''"
     :style="{ transitionDuration: 'var(--ui-duration-normal)' }">
-    <div class="container mx-auto px-4 flex items-center justify-between gap-4">
+    <div class="theme-navbar-shell mx-auto flex items-center justify-between gap-4">
       <!-- Logo -->
       <router-link to="/" class="theme-wordmark group relative" :title="brandSiteName">
         <span class="theme-wordmark-mark">禧</span>
@@ -11,7 +11,7 @@
       </router-link>
 
       <!-- Desktop Menu -->
-      <div class="hidden lg:flex items-center space-x-1 min-w-0 overflow-x-auto scrollbar-hide">
+      <div class="hidden lg:flex items-center gap-2 min-w-0 overflow-x-auto scrollbar-hide theme-nav-menu">
         <template v-for="item in menuItems" :key="item.key">
           <router-link v-if="item.type === 'route'" :to="item.path"
             class="theme-nav-link text-sm relative group overflow-hidden flex items-center gap-1.5 whitespace-nowrap shrink-0"
@@ -32,7 +32,7 @@
       </div>
 
       <!-- Right Side Actions -->
-      <div class="flex items-center shrink-0 space-x-2 lg:space-x-4">
+      <div class="flex items-center shrink-0 gap-2 lg:gap-2.5 theme-nav-actions">
         <!-- Cart (desktop only, mobile has bottom nav) -->
         <router-link to="/cart"
           class="hidden lg:flex theme-nav-link relative gap-2 min-w-[44px] min-h-[44px] items-center justify-center whitespace-nowrap">
@@ -70,7 +70,7 @@
           {{ t('navbar.personalCenter') }}
         </router-link>
         <button v-if="userAuthStore.isAuthenticated" @click="userAuthStore.logout()"
-          class="hidden lg:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-white hover:bg-red-50 dark:hover:bg-red-500/10 transition-all border border-transparent hover:border-red-200 dark:hover:border-red-500/20 text-xs font-medium whitespace-nowrap">
+          class="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-transparent px-3.5 py-2 text-xs font-semibold text-red-500 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:border-red-500/20 dark:hover:bg-red-500/10 dark:hover:text-white whitespace-nowrap">
           <svg class="w-4 h-4 shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
