@@ -29,11 +29,7 @@
       </div>
 
       <!-- Loading State -->
-      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="i in 6" :key="i"
-          class="theme-surface-muted rounded-2xl h-[300px] animate-pulse border">
-        </div>
-      </div>
+      <PageLoadingState v-if="loading" :label="t('common.loading')" />
 
       <!-- Posts Grid -->
       <div v-else-if="posts.length > 0">
@@ -110,17 +106,13 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else
-        class="text-center py-20 border theme-border rounded-2xl theme-panel backdrop-blur-sm">
-        <svg class="w-20 h-20 mx-auto theme-text-muted mb-6" fill="none" stroke="currentColor"
-          viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-        </svg>
-        <p class="theme-text-muted text-lg">
-          {{ searchKeyword.trim() ? t('blog.noResults') : t('blog.empty') }}
-        </p>
-      </div>
+      <EmptyState
+        v-else
+        icon="inbox"
+        size="md"
+        :title="searchKeyword.trim() ? t('blog.noResults') : t('blog.empty')"
+        :description="searchKeyword.trim() ? t('blog.noResultsDescription') : t('blog.emptyDescription')"
+      />
     </div>
   </div>
 </template>
@@ -134,6 +126,8 @@ import { postAPI } from '../api'
 import { getImageUrl } from '../utils/image'
 import { debounceAsync } from '../utils/debounce'
 import { usePageSeo } from '../composables/usePageSeo'
+import EmptyState from '../components/EmptyState.vue'
+import PageLoadingState from '../components/PageLoadingState.vue'
 
 const router = useRouter()
 const { t } = useI18n()

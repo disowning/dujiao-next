@@ -30,30 +30,7 @@
         <!-- Main Content - Products Grid -->
         <main class="min-w-0 flex-1">
           <!-- Loading Skeleton -->
-          <div v-if="loading" class="products-shop-grid">
-            <div v-for="i in 6" :key="i"
-              class="products-skeleton-card">
-              <div class="products-skeleton-media">
-                <div class="products-skeleton-chip"></div>
-              </div>
-              <div class="space-y-4 p-5">
-                <div class="products-skeleton-line w-20"></div>
-                <div class="products-skeleton-line h-5 w-4/5"></div>
-                <div class="flex gap-2.5">
-                  <div class="products-skeleton-pill"></div>
-                  <div class="products-skeleton-pill w-20"></div>
-                </div>
-                <div class="space-y-2">
-                  <div class="products-skeleton-line"></div>
-                  <div class="products-skeleton-line w-2/3"></div>
-                </div>
-                <div class="products-skeleton-footer">
-                  <div class="products-skeleton-line h-6 w-24"></div>
-                  <div class="products-skeleton-button"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <PageLoadingState v-if="loading" :label="t('common.loading')" />
 
           <!-- Products Grid -->
           <div v-else-if="products.length > 0">
@@ -103,7 +80,7 @@
                 {{ t('products.refreshProducts') }}
               </button>
               <router-link to="/" class="theme-btn-inline-md border theme-btn-secondary font-semibold">
-                {{ t('common.backHome') }}
+                {{ t('products.backHome') }}
               </router-link>
             </template>
           </EmptyState>
@@ -132,6 +109,7 @@ import ProductQuickBuy from '../components/ProductQuickBuy.vue'
 import CategorySidebar from '../components/CategorySidebar.vue'
 import PaginationNav from '../components/PaginationNav.vue'
 import EmptyState from '../components/EmptyState.vue'
+import PageLoadingState from '../components/PageLoadingState.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -233,69 +211,6 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
-}
-
-.products-skeleton-card {
-  overflow: hidden;
-  border: 1px solid rgba(226, 232, 240, 0.88);
-  border-radius: 22px;
-  background: var(--ui-bg-elevated);
-  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.06);
-}
-
-.products-skeleton-media {
-  position: relative;
-  height: 13rem;
-  background:
-    radial-gradient(circle at 18% 20%, rgba(37, 99, 235, 0.12), transparent 28%),
-    linear-gradient(135deg, var(--ui-bg-soft) 0%, rgba(37, 99, 235, 0.08) 100%);
-}
-
-.products-skeleton-chip {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  width: 4.75rem;
-  height: 1.6rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
-}
-
-.products-skeleton-line,
-.products-skeleton-pill,
-.products-skeleton-button {
-  border-radius: 999px;
-  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 37%, #eef2f7 63%);
-  background-size: 400% 100%;
-  animation: products-skeleton-loading 1.4s ease infinite;
-}
-
-.products-skeleton-line {
-  height: 0.75rem;
-  width: 100%;
-}
-
-.products-skeleton-pill {
-  height: 1.5rem;
-  width: 4rem;
-}
-
-.products-skeleton-button {
-  height: 2.25rem;
-  width: 2.25rem;
-}
-
-.products-skeleton-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid rgba(226, 232, 240, 0.82);
-  padding-top: 1rem;
-}
-
-@keyframes products-skeleton-loading {
-  0% { background-position: 100% 50%; }
-  100% { background-position: 0 50%; }
 }
 
 @media (min-width: 640px) {

@@ -147,6 +147,7 @@ const messages = {
             emptyFilteredDescription: '当前筛选条件下没有商品，可以清除筛选后重新查看。',
             clearFilters: '清除筛选条件',
             refreshProducts: '刷新商品',
+            backHome: '返回首页',
             previous: '上一页',
             next: '下一页',
             price: '价格',
@@ -188,9 +189,11 @@ const messages = {
             subtitle: '最新文章和动态',
             readMore: '阅读更多',
             empty: '暂无文章',
+            emptyDescription: '有新的文章内容时会显示在这里。',
             searchPlaceholder: '搜索文章标题...',
             searchClear: '清除',
             noResults: '没有找到匹配的文章',
+            noResultsDescription: '没有找到符合当前搜索条件的文章。',
             relatedProducts: '相关商品',
         },
         blogDetail: {
@@ -201,6 +204,7 @@ const messages = {
         notice: {
             subtitle: '重要公告和通知',
             empty: '暂无公告',
+            emptyDescription: '有新的公告内容时会显示在这里。',
         },
         announcement: {
             close: '关闭',
@@ -1267,6 +1271,7 @@ const messages = {
             emptyFilteredDescription: '目前篩選條件下沒有商品，可以清除篩選後重新查看。',
             clearFilters: '清除篩選條件',
             refreshProducts: '刷新商品',
+            backHome: '返回首頁',
             previous: '上一頁',
             next: '下一頁',
             price: '價格',
@@ -1349,9 +1354,11 @@ const messages = {
             subtitle: '最新文章和動態',
             readMore: '閱讀更多',
             empty: '暫無文章',
+            emptyDescription: '有新的文章內容時會顯示在這裡。',
             searchPlaceholder: '搜尋文章標題...',
             searchClear: '清除',
             noResults: '沒有找到符合的文章',
+            noResultsDescription: '沒有找到符合目前搜尋條件的文章。',
             relatedProducts: '相關商品',
         },
         blogDetail: {
@@ -1362,6 +1369,7 @@ const messages = {
         notice: {
             subtitle: '重要公告和通知',
             empty: '暫無公告',
+            emptyDescription: '有新的公告內容時會顯示在這裡。',
         },
         announcement: {
             close: '關閉',
@@ -2387,6 +2395,7 @@ const messages = {
             emptyFilteredDescription: 'No products match the current filters. Clear filters and try again.',
             clearFilters: 'Clear filters',
             refreshProducts: 'Refresh products',
+            backHome: 'Back to home',
             previous: 'Previous',
             next: 'Next',
             price: 'Price',
@@ -2469,9 +2478,11 @@ const messages = {
             subtitle: 'Latest articles and updates',
             readMore: 'Read More',
             empty: 'No articles',
+            emptyDescription: 'New articles will appear here when available.',
             searchPlaceholder: 'Search article title...',
             searchClear: 'Clear',
             noResults: 'No articles match your search',
+            noResultsDescription: 'No articles match the current search.',
             relatedProducts: 'Related Products',
         },
         blogDetail: {
@@ -2482,6 +2493,7 @@ const messages = {
         notice: {
             subtitle: 'Important notices and announcements',
             empty: 'No notices',
+            emptyDescription: 'New notices will appear here when available.',
         },
         announcement: {
             close: 'Close',

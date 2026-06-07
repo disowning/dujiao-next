@@ -12,10 +12,8 @@
       </div>
 
       <!-- Loading State -->
-      <div v-if="loading" class="space-y-4 max-w-4xl mx-auto">
-        <div v-for="i in 6" :key="i"
-          class="theme-surface-muted rounded-2xl h-32 animate-pulse border">
-        </div>
+      <div v-if="loading" class="max-w-4xl mx-auto">
+        <PageLoadingState :label="t('common.loading')" />
       </div>
 
       <!-- Notices List -->
@@ -93,16 +91,13 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else
-        class="text-center py-20 border theme-panel-soft rounded-2xl backdrop-blur-sm max-w-4xl mx-auto">
-        <svg class="w-20 h-20 mx-auto theme-text-muted mb-6" fill="none" stroke="currentColor"
-          viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-        <p class="theme-text-muted text-lg">
-          {{ t('notice.empty') }}
-        </p>
+      <div v-else class="max-w-4xl mx-auto">
+        <EmptyState
+          icon="inbox"
+          size="md"
+          :title="t('notice.empty')"
+          :description="t('notice.emptyDescription')"
+        />
       </div>
     </div>
   </div>
@@ -117,6 +112,8 @@ import { postAPI } from '../api'
 import { getImageUrl } from '../utils/image'
 import { debounceAsync } from '../utils/debounce'
 import { usePageSeo } from '../composables/usePageSeo'
+import EmptyState from '../components/EmptyState.vue'
+import PageLoadingState from '../components/PageLoadingState.vue'
 
 const router = useRouter()
 const { t } = useI18n()

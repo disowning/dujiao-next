@@ -1,12 +1,10 @@
-<template>
+﻿<template>
   <div id="app" class="min-h-screen theme-page flex flex-col">
     <Navbar />
     <main class="flex-1 pb-14 lg:pb-0">
       <ErrorBoundary>
         <RouterView v-slot="{ Component }">
-          <Transition name="page-fade" mode="out-in">
-            <component :is="Component" />
-          </Transition>
+          <component :is="Component" />
         </RouterView>
       </ErrorBoundary>
     </main>
@@ -33,15 +31,3 @@ import MobileBottomNav from './components/MobileBottomNav.vue'
 // config 由 router.beforeEach 统一加载，无需在此重复调用
 const appStore = useAppStore()
 </script>
-
-<style>
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity 200ms ease;
-}
-
-.page-fade-enter-from,
-.page-fade-leave-to {
-  opacity: 0;
-}
-</style>
