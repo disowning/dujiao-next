@@ -96,79 +96,54 @@
         {{ getLocalizedText(product.description) }}
       </p>
 
-      <div class="mt-auto flex items-center justify-between gap-3 rounded-2xl border border-blue-100/70 bg-gradient-to-br from-blue-50/80 to-violet-50/70 p-3">
-        <div class="flex flex-col">
-          <span class="hidden md:block text-xs theme-text-muted uppercase tracking-wider">{{ t('products.price') }}</span>
+      <div class="product-card-footer">
+        <div class="product-card-price-block">
+          <span class="product-card-price-label">{{ t('products.price') }}</span>
           <span
-            v-if="hasPromotionPrice(product)"
-            class="theme-price-sm text-rose-600 dark:text-rose-300"
-            :aria-label="t('products.promotionPriceAria', { price: formatPrice(getPromotionPriceAmount(product), siteCurrency) })"
+            class="product-card-price-main"
+            :class="{ 'product-card-price-main--promotion': hasProductPromotionPrice }"
+            :aria-label="activePriceAria"
           >
-            {{ formatPrice(getPromotionPriceAmount(product), siteCurrency) }}
+            <span class="product-card-price-amount">{{ activePriceParts.amount }}</span>
+            <span v-if="activePriceParts.currency" class="product-card-price-currency">{{ activePriceParts.currency }}</span>
           </span>
-          <span
-            v-else
-            class="theme-price-sm theme-text-primary"
-            :aria-label="t('products.priceAria', { price: formatPrice(product.price_amount, siteCurrency) })"
-          >
-            {{ formatPrice(product.price_amount, siteCurrency) }}
-          </span>
-          <div v-if="hasPromotionPrice(product)" class="mt-0.5 flex flex-wrap items-center gap-1.5">
+          <div v-if="hasProductPromotionPrice" class="product-card-price-meta">
             <span
-              class="hidden md:inline text-xs theme-text-muted opacity-80 line-through"
-              :aria-label="t('products.originalPriceAria', { price: formatPrice(product.price_amount, siteCurrency) })"
+              class="product-card-original-price"
+              :aria-label="originalPriceAria"
             >{{ formatPrice(product.price_amount, siteCurrency) }}</span>
             <span class="theme-badge theme-badge-danger theme-badge-xs">
               {{ t('products.promotionTag') }}
             </span>
           </div>
-          <div v-else-if="hasWholesalePrices(product)" class="mt-0.5 flex flex-wrap items-center gap-1.5">
+          <div v-else-if="hasWholesalePrices(product)" class="product-card-price-meta">
             <span class="theme-badge theme-badge-success theme-badge-xs">
               {{ t('products.wholesaleTag') }}
             </span>
           </div>
-          <div v-else-if="hasPromotionRules(product)" class="mt-0.5 flex flex-wrap items-center gap-1.5">
+          <div v-else-if="hasPromotionRules(product)" class="product-card-price-meta">
             <span class="theme-badge theme-badge-warning theme-badge-xs">
               {{ t('products.promotionBadge') }}
             </span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <!-- Quick buy cart button -->
-          <button
-            type="button"
-            :aria-label="t('products.quickBuyAria')"
-            class="relative inline-flex h-9 items-center justify-center gap-1.5 rounded-full border px-3 text-xs font-bold transition-all md:h-10 md:px-4"
-            :class="isSoldOut(product)
-              ? 'opacity-40 cursor-not-allowed border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-600'
-              : 'border-transparent bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-[0_10px_22px_rgba(37,99,235,0.22)] hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(37,99,235,0.3)]'"
-            :disabled="isSoldOut(product)"
-            :aria-disabled="isSoldOut(product)"
-            @click.stop="$emit('quickBuy', product)"
-          >
+        <button
+          type="button"
+          :aria-label="t('products.quickBuyAria')"
+          class="product-card-buy-button"
+          :class="{ 'product-card-buy-button--disabled': isSoldOut(product) }"
+          :disabled="isSoldOut(product)"
+          :aria-disabled="isSoldOut(product)"
+          @click.stop="$emit('quickBuy', product)"
+        >
+          <span class="product-card-buy-icon" aria-hidden="true">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
             </svg>
-            <span>{{ t('products.buyNow') }}</span>
-          </button>
-          <!-- Desktop: view details -->
-          <span
-            class="hidden md:flex text-xs uppercase font-bold transition-colors items-center gap-1"
-            :class="isSoldOut(product)
-              ? 'text-rose-500/90 dark:text-rose-300/90'
-              : 'text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white'">
-            <svg class="w-4 h-4 transition-transform" :class="isSoldOut(product) ? '' : 'group-hover:translate-x-1'" fill="none"
-              stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
           </span>
-          <!-- Mobile: arrow only -->
-          <svg class="md:hidden w-4 h-4 theme-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
+          <span>{{ t('quickBuy.buyNow') }}</span>
+        </button>
       </div>
     </div>
   </div>
@@ -200,6 +175,46 @@ const { t } = useI18n()
 const { getLocalizedText, siteCurrency, formatPrice } = useLocalized()
 const { getPurchaseTypeLabel, getFulfillmentTypeLabel, getStockBadgeClass, getStockStatusLabel, isSoldOut, hasPromotionPrice, getPromotionPriceAmount, hasPromotionRules, hasWholesalePrices } = useProductLabels()
 
+const hasProductPromotionPrice = computed(() => hasPromotionPrice(props.product))
+
+const splitPriceDisplay = (amount: any) => {
+  const currency = siteCurrency.value
+  const display = formatPrice(amount, currency)
+  if (display === '-') return { amount: display, currency: '' }
+
+  const normalizedCurrency = String(currency || '').trim()
+  const currencySuffix = normalizedCurrency ? ` ${normalizedCurrency}` : ''
+  if (currencySuffix && display.endsWith(currencySuffix)) {
+    return {
+      amount: display.slice(0, -currencySuffix.length),
+      currency: normalizedCurrency,
+    }
+  }
+
+  return { amount: display, currency: '' }
+}
+
+const activePriceAmount = computed(() => (
+  hasProductPromotionPrice.value
+    ? getPromotionPriceAmount(props.product)
+    : props.product?.price_amount
+))
+
+const activePriceParts = computed(() => splitPriceDisplay(activePriceAmount.value))
+
+const activePriceAria = computed(() => {
+  const price = formatPrice(activePriceAmount.value, siteCurrency.value)
+  return hasProductPromotionPrice.value
+    ? t('products.promotionPriceAria', { price })
+    : t('products.priceAria', { price })
+})
+
+const originalPriceAria = computed(() => (
+  t('products.originalPriceAria', {
+    price: formatPrice(props.product?.price_amount, siteCurrency.value),
+  })
+))
+
 const imageErrored = ref(false)
 const attemptIdx = ref(0)
 
@@ -230,3 +245,178 @@ const handleImageError = () => {
   }
 }
 </script>
+
+<style scoped>
+.product-card-footer {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.product-card-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--ui-border-strong) 58%, transparent),
+    transparent
+  );
+}
+
+.product-card-price-block {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.18rem;
+}
+
+.product-card-price-label {
+  color: var(--ui-text-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.product-card-price-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  color: var(--ui-price-primary);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.product-card-price-main--promotion {
+  color: var(--ui-price-promotion);
+}
+
+.product-card-price-amount {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(1.35rem, 4.8vw, 1.72rem);
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+}
+
+.product-card-price-currency {
+  color: var(--ui-text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.product-card-price-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-height: 1.1rem;
+}
+
+.product-card-original-price {
+  color: var(--ui-price-original);
+  font-size: 0.72rem;
+  line-height: 1;
+  text-decoration: line-through;
+}
+
+.product-card-buy-button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  min-height: 2.7rem;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 1.15rem;
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 58%, #7c3aed 100%);
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.24);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.product-card-buy-button::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 62%);
+  pointer-events: none;
+}
+
+.product-card-buy-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: saturate(1.08);
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.3);
+}
+
+.product-card-buy-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
+}
+
+.product-card-buy-button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 16px 34px rgba(37, 99, 235, 0.3),
+    0 0 0 3px var(--ui-focus-ring);
+}
+
+.product-card-buy-button--disabled,
+.product-card-buy-button:disabled {
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+  color: rgba(255, 255, 255, 0.86);
+  box-shadow: none;
+  filter: grayscale(0.15);
+  opacity: 0.72;
+}
+
+.product-card-buy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .product-card-buy-button {
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.18);
+}
+
+.dark .product-card-buy-button:hover:not(:disabled) {
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.28);
+}
+
+@media (max-width: 380px) {
+  .product-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .product-card-buy-button {
+    width: 100%;
+  }
+}
+</style>
